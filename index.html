@@ -3,30 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Source Code Update</title>
+    <title>Minecraft Signal Sender</title>
 </head>
 <body>
-    <h1 id="content">Default Content</h1>
-    <input type="text" id="textInput" placeholder="Enter new content">
-    <button onclick="updateSourceCode()">Update Source Code</button>
+    <form id="signalForm">
+        <label for="signal">Enter Signal:</label>
+        <input type="text" id="signal" name="signal" required>
+        <button type="submit">Send Signal</button>
+    </form>
 
     <script>
-        // Retrieve the stored content from localStorage
-        const storedContent = localStorage.getItem('storedContent');
-        if (storedContent) {
-            document.getElementById('content').innerText = storedContent;
-        }
+        document.getElementById('signalForm').addEventListener('submit', function (event) {
+            event.preventDefault();
 
-        function updateSourceCode() {
-            // Get the input value
-            const newContent = document.getElementById('textInput').value;
+            const signal = document.getElementById('signal').value;
 
-            // Update the content
-            document.getElementById('content').innerText = newContent;
-
-            // Store the content in localStorage
-            localStorage.setItem('storedContent', newContent);
-        }
+            fetch('http://localhost:8080/receiveSignal', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'text/plain',
+                },
+                body: signal,
+            })
+            .then(response => response.text())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+        });
     </script>
 </body>
 </html>
