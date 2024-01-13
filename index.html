@@ -11,36 +11,21 @@
     <button onclick="updateSourceCode()">Update Source Code</button>
 
     <script>
+        // Retrieve the stored content from localStorage
+        const storedContent = localStorage.getItem('storedContent');
+        if (storedContent) {
+            document.getElementById('content').innerText = storedContent;
+        }
+
         function updateSourceCode() {
             // Get the input value
             const newContent = document.getElementById('textInput').value;
 
-            // Build a new HTML string
-            const newHTML = `
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Dynamic Source Code Update</title>
-                </head>
-                <body>
-                    <h1 id="content">${newContent}</h1>
-                    <input type="text" id="textInput" placeholder="Enter new content">
-                    <button onclick="updateSourceCode()">Update Source Code</button>
+            // Update the content
+            document.getElementById('content').innerText = newContent;
 
-                    <script>
-                        function updateSourceCode() {
-                            const newContent = document.getElementById('textInput').value;
-                            document.getElementById('content').innerText = newContent;
-                        }
-                </body>
-                </html>
-            `;
-            // Clear the existing document and write the new HTML
-            document.open();
-            document.write(newHTML);
-            document.close();
+            // Store the content in localStorage
+            localStorage.setItem('storedContent', newContent);
         }
     </script>
 </body>
