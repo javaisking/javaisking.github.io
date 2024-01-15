@@ -2,33 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minecraft Signal Sender</title>
+    <title>Console</title>
 </head>
 <body>
-    <form id="signalForm">
-        <label for="signal">Enter Signal:</label>
-        <input type="text" id="signal" name="signal" required>
-        <button type="submit">Send Signal</button>
-    </form>
-
-    <script>
-        document.getElementById('signalForm').addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            const signal = document.getElementById('signal').value;
-
-            fetch('http://localhost:8080/receiveSignal', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'text/plain',
-                },
-                body: signal,
-            })
-            .then(response => response.text())
-            .then(data => console.log(data))
-            .catch(error => console.error('Error:', error));
-        });
-    </script>
+  <div id="console" class="console" readonly></div>
+  <button class="refresh" onclick="refresh();">R</button>"
+  <form autocomplete=off id="dataForm">
+      <input type="text" id="data" class="in" name="data">
+  </form>
+    <div class="log"></div>
+  <script src="script.js"></script>
 </body>
 </html>
