@@ -40,24 +40,6 @@ async function refresh(){
           return decodeURIComponent(encodedData.replace(/\+/g, ' '));
       };
 
-      // Send data to Supabase
-      const postDataResponse = await fetch(`${supabaseUrl}/rest/v1/data`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-              'apikey': supabaseKey,
-          },
-          body: JSON.stringify({ data }),
-      });
-
-      // Check if data sent successfully
-      if (!postDataResponse.ok) {
-          throw new Error('Failed to send data to Supabase');
-      }
-
-      // Wait for 0.2 seconds
-      await new Promise(resolve => setTimeout(resolve, 550));
-
       // Retrieve and process data from Supabase
       const response = await fetch(`${supabaseUrl}/rest/v1/console`, {
           method: 'GET',
