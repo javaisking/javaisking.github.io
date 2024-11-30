@@ -1,164 +1,108 @@
-async function refresh(){
-  try {
-      let amount = 0;
-      const supabaseUrl = 'https://dbqbjyizonssvnigfaum.supabase.co';
-      const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRicWJqeWl6b25zc3ZuaWdmYXVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDUxODgyMTgsImV4cCI6MjAyMDc2NDIxOH0.qdCwDF6CQS_qOfNpT6nE_4xVvdu1SJ71njTEgnl1ygk';
-      const data = document.getElementById('data').value;
-
-
-      const colorizeText = (text) => {
-        // Replace newlines with <br> tags
-        text = text.replace(/\n/g, '<br>');
-  
-        // Split text into segments
-        const segments = text.split(/(\[\d+:\d+:\d+\]|\[Server thread\/INFO\]|\([^)]+\)|"[^"]+")/);
-  
-        // Define color mappings
-        const colorMap = {
-          '\\[\\d+:\\d+:\\d+\\]': '#3592B7',
-          '\\[Server thread\\/INFO\\]': '#5B842A',
-          '\\([^)]+\\)': '#1B7396',
-          '"[^"]+"': '#B9B7B6',
-        };
-  
-        // Apply colors based on patterns
-        const coloredSegments = segments.map((segment) => {
-          for (const pattern in colorMap) {
-            const regex = new RegExp(pattern, 'g');
-            if (regex.test(segment)) {
-              return `<span style="color: ${colorMap[pattern]}">${segment}</span>`;
-            }
-          }
-          return segment;
-        });
-  
-        // Join colored segments
-        return coloredSegments.join('');
-      };
+document.addEventListener('DOMContentLoaded', () => {
+    // JavaScript to handle the smooth scrolling behavior and preserve the scroll position
+    const container = document.getElementById('con');
+    const scrollingContent = document.getElementById('scrollCon');
+    let isScrolling = false;
+    let items = [];  // Store all items
+    let animationFrameId = null;  // Store animation frame ID for canceling
     
-      const decodeUrlEncodedData = (encodedData) => {
-          return decodeURIComponent(encodedData.replace(/\+/g, ' '));
-      };
-
-      // Retrieve and process data from Supabase
-      const response = await fetch(`${supabaseUrl}/rest/v1/console`, {
-          method: 'GET',
-          headers: {
-              'Content-Type': 'application/json',
-              'apikey': supabaseKey,
-          },
+    // Function to initialize items and set their initial positions
+    function initializeItems() {
+      const allItems = scrollingContent.querySelectorAll('.language-item');
+      items = Array.from(allItems); // Convert NodeList to array
+    
+      let leftOffset = 0; // Initial offset for the first item
+    
+      // Position each item absolutely side by side
+      items.forEach((item, index) => {
+        item.style.left = `${leftOffset}px`;
+        leftOffset += item.offsetWidth + 20; // Add spacing between items (20px)
       });
-
-      const dete = await response.json();
-
-      // Process the retrieved data (you may need to implement this part)
-      if (dete.length > amount) {
-          const decodedData = decodeUrlEncodedData(dete[dete.length - 1].data);
-          const colorizedData = colorizeText(decodedData);
-          document.getElementById('console').innerHTML = colorizedData;
-          document.getElementById('console').scrollTop = document.getElementById('console').scrollHeight;
+    }
+    
+    // Function to start scrolling when hovering
+    function startScrolling() {
+      if (!isScrolling) {
+        isScrolling = true;
+        scrollingContent.style.transition = 'none'; // Disable transition to avoid jumps
+        animateScroll(); // Start scrolling animation
       }
-      amount = dete.length;
+    }
+    
+    // Function to stop scrolling when unhovering
+    function stopScrolling() {
+      isScrolling = false;
+      cancelAnimationFrame(animationFrameId); // Stop the scroll loop
+    }
+    
+    // Function to animate scrolling
+    function animateScroll() {
+      if (isScrolling) {
+        // Move each item to the left by 1px per frame
+        items.forEach(item => {
+          const currentLeft = parseFloat(item.style.left) || 0;
+          item.style.left = `${currentLeft - 1}px`; // Move each item 1px left
+    
+          // If an item has completely moved off-screen (left side), move it to the right end
+          if (currentLeft + item.offsetWidth <= 0) {
+            // Move the item to the far right without disrupting the order
+            moveItemToEnd(item);
+          }
+        });
+    
+        // Request next animation frame for continuous scrolling
+        animationFrameId = requestAnimationFrame(animateScroll);
+      }
+    }
+    
+    // Function to move an item to the far right
+    function moveItemToEnd(item) {
+      const lastItem = items[items.length - 1];
+      const lastItemLeft = parseFloat(lastItem.style.left) || 0;
+      const nextLeftPosition = lastItemLeft + lastItem.offsetWidth + 20; // 20px gap between items
+    
+      // Reset the item's position to the far right
+      item.style.left = `${nextLeftPosition}px`;
+    
+      // Move the item to the end of the array
+      items.push(items.shift()); // Remove the first item and append it to the end of the array
+    }
+    
+    // Event listeners for hover
+    container.addEventListener('mouseenter', startScrolling);
+    container.addEventListener('mouseleave', stopScrolling);
+    
+    // Initialize items when the page loads
+    initializeItems();
+    
 
-  } catch (error) {
-      console.error('Error:', error.message);
-  } finally {
-      // Clear input field after processing
-      document.getElementById('data').value = '';
-  }
-}
 
+    const glow = document.getElementById('glow');
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let currentX = targetX;
+    let currentY = targetY;
 
-
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('dataForm').addEventListener('keydown', async function (event) {
-        if (event.keyCode === 13) {
-            event.preventDefault()
-            const supabaseUrl = 'https://dbqbjyizonssvnigfaum.supabase.co';
-            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRicWJqeWl6b25zc3ZuaWdmYXVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDUxODgyMTgsImV4cCI6MjAyMDc2NDIxOH0.qdCwDF6CQS_qOfNpT6nE_4xVvdu1SJ71njTEgnl1ygk'; // Replace with your Supabase API key
-            let amount = 0;
-
-            const decodeUrlEncodedData = (encodedData) => {
-                return decodeURIComponent(encodedData.replace(/\+/g, ' '));
-            };
-
-          const colorizeText = (text) => {
-            // Replace newlines with <br> tags
-            text = text.replace(/\n/g, '<br>');
-
-            // Split text into segments
-            const segments = text.split(/(\[\d+:\d+:\d+\]|\[Server thread\/INFO\]|\([^)]+\)|"[^"]+")/);
-
-            // Define color mappings
-            const colorMap = {
-              '\\[\\d+:\\d+:\\d+\\]': '#3592B7',
-              '\\[Server thread\\/INFO\\]': '#5B842A',
-              '\\([^)]+\\)': '#1B7396',
-              '"[^"]+"': '#B9B7B6',
-            };
-
-            // Apply colors based on patterns
-            const coloredSegments = segments.map((segment) => {
-              for (const pattern in colorMap) {
-                const regex = new RegExp(pattern, 'g');
-                if (regex.test(segment)) {
-                  return `<span style="color: ${colorMap[pattern]}">${segment}</span>`;
-                }
-              }
-              return segment;
-            });
-
-            // Join colored segments
-            return coloredSegments.join('');
-          };
-
-            try {
-                const data = document.getElementById('data').value;
-
-                // Send data to Supabase
-                const postDataResponse = await fetch(`${supabaseUrl}/rest/v1/data`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'apikey': supabaseKey,
-                    },
-                    body: JSON.stringify({ data }),
-                });
-
-                // Check if data sent successfully
-                if (!postDataResponse.ok) {
-                    throw new Error('Failed to send data to Supabase');
-                }
-
-                // Wait for 0.2 seconds
-                await new Promise(resolve => setTimeout(resolve, 550));
-
-                // Retrieve and process data from Supabase
-                const response = await fetch(`${supabaseUrl}/rest/v1/console`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'apikey': supabaseKey,
-                    },
-                });
-
-                const dete = await response.json();
-
-                // Process the retrieved data (you may need to implement this part)
-                if (dete.length > amount) {
-                    const decodedData = decodeUrlEncodedData(dete[dete.length - 1].data);
-                    const colorizedData = colorizeText(decodedData);
-                    document.getElementById('console').innerHTML = colorizedData;
-                    document.getElementById('console').scrollTop = document.getElementById('console').scrollHeight;
-                }
-                amount = dete.length;
-
-            } catch (error) {
-                console.error('Error:', error.message);
-            } finally {
-                // Clear input field after processing
-                document.getElementById('data').value = '';
-            }
-        }
+    // Track the mouse position
+    document.addEventListener('mousemove', (e) => {
+        targetX = e.clientX;
+        targetY = e.clientY;
     });
-});
+
+    // Smoothly animate the glow
+    function animate() {
+        // Smoothly interpolate towards the target position
+        currentX += (targetX - currentX) * 0.1;
+        currentY += (targetY - currentY) * 0.1;
+
+        // Update glow position
+        glow.style.transform = `translate(-50%, -50%) translate(${currentX}px, ${currentY}px)`;
+
+        requestAnimationFrame(animate);
+    }
+
+    // Start the animation loop
+    animate();
+
+
+})
