@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="100.88477"
+   height="100.64453"
+   viewBox="0 0 100.88477 100.64453"
+   version="1.1"
+   id="svg1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient11">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop11" />
+      <stop
+         style="stop-color:#b1e5f2;stop-opacity:1;"
+         offset="1"
+         id="stop12" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient11"
+       id="linearGradient12"
+       x1="11.663617"
+       y1="94.766891"
+       x2="140.83818"
+       y2="-18.953377"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <g
+     id="layer1"
+     transform="translate(-9.8144531,-10.363281)">
+    <path
+       id="text1"
+       style="font-size:115px;font-family:Algerian;-inkscape-font-specification:Algerian;fill:url(#linearGradient12);fill-opacity:1"
+       d="M 9.8144531,10.363281 V 92.474609 H 32.699219 c 13.49332,0 23.99644,-3.488184 31.509765,-10.464843 0.208131,-0.193415 0.403045,-0.399111 0.605469,-0.597657 V 111.00781 H 75.164062 V 76.162109 H 108.51367 V 67.076172 H 75.164062 v -8.783203 c 0.284937,-2.432518 0.431641,-4.991015 0.431641,-7.679688 0,-2.549023 -0.156082,-4.960119 -0.431641,-7.265625 V 37.982422 H 110.69922 V 28.896484 H 70.833984 c -0.06399,-0.11804 -0.118313,-0.24443 -0.183593,-0.361328 C 67.353727,22.555162 62.675801,18.031507 56.619141,14.964844 50.56248,11.89818 43.395226,10.363281 35.115234,10.363281 Z M 20.164062,19.21875 h 13.455079 c 9.88999,0 17.518104,2.568417 22.884765,7.705078 5.443328,5.059995 8.166016,13.071834 8.166016,24.035156 0,21.773312 -11.116298,32.660157 -33.34961,32.660157 h -11.15625 z" />
+    <rect
+       style="fill:#0d4350;fill-opacity:1"
+       id="rect13"
+       width="34.020618"
+       height="10.309278"
+       x="24.742268"
+       y="46.597939" />
+  </g>
+</svg>
